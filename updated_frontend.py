@@ -5,7 +5,11 @@ import requests
 def get_trade_decision(symbol):
     url = f'http://127.0.0.1:5000/calculate'
     try:
-        response = requests.post(url, json={'symbol': symbol})
+        # Example data structure expected by the Flask server
+        data = {
+            'close': [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110]
+        }
+        response = requests.post(url, json=data)
         response.raise_for_status()  # Raise an error for bad status codes
         data = response.json()       # Attempt to decode the JSON response
         print("Server response:", data)  # Debug print to see the server response
@@ -28,15 +32,14 @@ def update_decision():
 
 # Setup the Tkinter GUI
 root = tk.Tk()
-root.title("Crypto Trade Decision Bot")
+root.title("Trade Decision App")
 
-tk.Label(root, text="Enter Symbol:").grid(row=0)
+tk.Label(root, text="Enter Symbol:").pack()
 symbol_entry = tk.Entry(root)
-symbol_entry.grid(row=0, column=1)
+symbol_entry.pack()
 
-tk.Button(root, text="Get Trade Decision", command=update_decision).grid(row=1, columnspan=2)
-
-decision_label = tk.Label(root, text="Trade Decision: ")
-decision_label.grid(row=2, columnspan=2)
+tk.Button(root, text="Get Trade Decision", command=update_decision).pack()
+decision_label = tk.Label(root, text="")
+decision_label.pack()
 
 root.mainloop()
